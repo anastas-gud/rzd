@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+    rzd_db:
+        image: postgres
+        restart: always
+        env_file:
+            - postgres.env
+        ports:
+            - "7777:5432"
+        volumes:
+            - db-data:/var/lib/postgresql/data
+        networks:
+            - rzd_network
+
+
+    pgadmin:
+        image: dpage/pgadmin4:latest
+        env_file:
+            - pgadmin.env
+        ports:
+            - "5051:80"
+        networks:
+            - rzd_network
+
+volumes:
+    db-data:
+
+networks:
+    rzd_network:
