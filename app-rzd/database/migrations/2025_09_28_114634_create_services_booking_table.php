@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('services_booking', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('service_id')->constrained()->onDelete('cascade'); // Связь с услугами
-            $table->foreignId('booking_id')->constrained()->onDelete('cascade'); // Связь с бронированиями
+            $table->foreignIdFor(\App\Models\Service::class,'service_id')->constrained()->onDelete('cascade'); // Связь с услугами
+            $table->foreignIdFor(\App\Models\Booking::class,'booking_id')->constrained()->onDelete('cascade'); // Связь с бронированиями
             $table->integer('count')->default(1); // Количество услуги
             $table->decimal('current_price', 10, 2); // Текущая цена на момент бронирования
             $table->timestamps(); // created_at и updated_at

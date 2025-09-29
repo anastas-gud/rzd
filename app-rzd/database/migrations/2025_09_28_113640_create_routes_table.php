@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('routes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('start_station_id')->constrained('stations')->onDelete('cascade'); // Станция отправления
-            $table->foreignId('end_station_id')->constrained('stations')->onDelete('cascade'); // Станция назначения
+            $table->foreignIdFor(\App\Models\Station::class,'start_station_id')->constrained('stations')->onDelete('cascade'); // Станция отправления
+            $table->foreignIdFor(\App\Models\Station::class,'end_station_id')->constrained('stations')->onDelete('cascade'); // Станция назначения
             $table->string('number'); // Номер маршрута
             $table->timestamps(); // created_at и updated_at
 

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('trips', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('train_id')->constrained()->onDelete('cascade'); // Связь с поездами
-            $table->foreignId('route_id')->constrained()->onDelete('cascade'); // Связь с маршрутами
+            $table->foreignIdFor(\App\Models\Train::class,'train_id')->constrained()->onDelete('cascade'); // Связь с поездами
+            $table->foreignIdFor(\App\Models\Route::class,'route_id')->constrained()->onDelete('cascade'); // Связь с маршрутами
             $table->timestamp('start_timestamp'); // Время отправления
             $table->timestamp('end_timestamp'); // Время прибытия
             $table->boolean('is_denied')->default(false); // Отменен ли рейс
