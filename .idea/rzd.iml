@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/app-rzd/app" isTestSource="false" packagePrefix="App\" />
+      <sourceFolder url="file://$MODULE_DIR$/app-rzd/database/factories" isTestSource="false" packagePrefix="Database\Factories\" />
+      <sourceFolder url="file://$MODULE_DIR$/app-rzd/database/seeders" isTestSource="false" packagePrefix="Database\Seeders\" />
+      <sourceFolder url="file://$MODULE_DIR$/app-rzd/tests" isTestSource="true" packagePrefix="Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/app-rzd/tests/Feature" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/app-rzd/tests/Unit" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/brick/math" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/carbonphp/carbon-doctrine-types" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/dflydev/dot-access-data" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/doctrine/inflector" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/doctrine/lexer" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/dragonmantank/cron-expression" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/egulias/email-validator" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/fakerphp/faker" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/filp/whoops" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/fruitcake/php-cors" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/graham-campbell/result-type" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/guzzlehttp/guzzle" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/guzzlehttp/promises" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/guzzlehttp/psr7" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/guzzlehttp/uri-template" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/hamcrest/hamcrest-php" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/laravel/framework" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/laravel/pail" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/laravel/pint" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/laravel/prompts" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/laravel/sail" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/laravel/serializable-closure" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/laravel/tinker" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/league/commonmark" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/league/config" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/league/flysystem" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/league/flysystem-local" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/league/mime-type-detection" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/league/uri" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/league/uri-interfaces" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/mockery/mockery" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/monolog/monolog" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/myclabs/deep-copy" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/nesbot/carbon" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/nette/schema" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/nette/utils" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/nikic/php-parser" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/nunomaduro/collision" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/nunomaduro/termwind" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/phar-io/manifest" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/phar-io/version" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/phiki/phiki" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/phpoption/phpoption" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/phpunit/php-code-coverage" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/phpunit/php-file-iterator" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/phpunit/php-invoker" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/phpunit/php-text-template" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/phpunit/php-timer" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/phpunit/phpunit" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/psr/clock" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/psr/container" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/psr/event-dispatcher" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/psr/http-client" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/psr/http-factory" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/psr/http-message" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/psr/log" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/psr/simple-cache" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/psy/psysh" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/ralouphie/getallheaders" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/ramsey/collection" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/ramsey/uuid" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/sebastian/cli-parser" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/sebastian/code-unit" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/sebastian/code-unit-reverse-lookup" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/sebastian/comparator" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/sebastian/complexity" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/sebastian/diff" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/sebastian/environment" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/sebastian/exporter" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/sebastian/global-state" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/sebastian/lines-of-code" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/sebastian/object-enumerator" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/sebastian/object-reflector" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/sebastian/recursion-context" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/sebastian/type" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/sebastian/version" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/staabm/side-effects-detector" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/symfony/clock" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/symfony/console" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/symfony/css-selector" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/symfony/deprecation-contracts" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/symfony/error-handler" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/symfony/event-dispatcher" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/symfony/event-dispatcher-contracts" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/symfony/finder" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/symfony/http-foundation" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/symfony/http-kernel" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/symfony/mailer" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/symfony/mime" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/symfony/polyfill-ctype" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/symfony/polyfill-intl-grapheme" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/symfony/polyfill-intl-idn" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/symfony/polyfill-intl-normalizer" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/symfony/polyfill-mbstring" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/symfony/polyfill-php80" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/symfony/polyfill-php83" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/symfony/polyfill-php84" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/symfony/polyfill-php85" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/symfony/polyfill-uuid" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/symfony/process" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/symfony/routing" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/symfony/service-contracts" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/symfony/string" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/symfony/translation" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/symfony/translation-contracts" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/symfony/uid" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/symfony/var-dumper" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/symfony/yaml" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/theseer/tokenizer" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/tijsverkoyen/css-to-inline-styles" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/vlucas/phpdotenv" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/voku/portable-ascii" />
+      <excludeFolder url="file://$MODULE_DIR$/app-rzd/vendor/webmozart/assert" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
