@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Связь с пользователями
-            $table->foreignId('trip_id')->constrained()->onDelete('cascade');
+            $table->foreignIdFor(\App\Models\User::class,'user_id')->constrained()->onDelete('cascade'); // Связь с пользователями
+            $table->foreignIdFor(\App\Models\Trip::class,'trip_id')->constrained()->onDelete('cascade');
             $table->decimal('final_price', 10, 2); // Итоговая цена
-            $table->foreignId('seat_id')->constrained()->onDelete('cascade'); // Связь с местами
-            $table->foreignId('booking_passenger_id')->constrained()->onDelete('cascade'); // Связь с пассажирами
+            $table->foreignIdFor(\App\Models\Seat::class,'seat_id')->constrained()->onDelete('cascade'); // Связь с местами
+            $table->foreignIdFor(\App\Models\BookingPassenger::class,'booking_passenger_id')->constrained('booking_passengers')->onDelete('cascade'); // Связь с пассажирами
             $table->string('ticket_code')->unique(); // Уникальный код билета
             $table->boolean('is_canceled')->default(false); // Отменен ли билет
             $table->timestamps(); // created_at и updated_at

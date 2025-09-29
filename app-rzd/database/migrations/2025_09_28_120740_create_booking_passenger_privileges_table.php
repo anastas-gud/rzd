@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('booking_passenger_privileges', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('privilege_id')->constrained()->onDelete('cascade'); // Связь с льготами
-            $table->foreignId('booking_passenger_id')->constrained()->onDelete('cascade'); // Связь с пассажирами
+            $table->foreignIdFor(\App\Models\Privilege::class,'privilege_id')->constrained('privileges')->onDelete('cascade'); // Связь с льготами
+            $table->foreignIdFor(\App\Models\BookingPassenger::class,'booking_passenger_id')->constrained('booking_passengers')->onDelete('cascade'); // Связь с пассажирами
             $table->timestamps(); // created_at и updated_at
 
             // Уникальность льготы для пассажира

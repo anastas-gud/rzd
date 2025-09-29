@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('seats', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('carriage_id')->constrained()->onDelete('cascade'); // Связь с вагонами
+            $table->foreignIdFor(\App\Models\Carriage::class,'carriage_id')->constrained()->onDelete('cascade'); // Связь с вагонами
             $table->integer('number'); // Номер места
             $table->decimal('price', 10, 2); // Цена места
             $table->timestamps(); // created_at и updated_at
