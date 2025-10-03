@@ -131,6 +131,7 @@
       <path value="$PROJECT_DIR$/app-rzd/vendor/psr/event-dispatcher" />
       <path value="$PROJECT_DIR$/app-rzd/vendor/hamcrest/hamcrest-php" />
       <path value="$PROJECT_DIR$/app-rzd/vendor/myclabs/deep-copy" />
+      <path value="$PROJECT_DIR$/app-rzd/vendor/livewire/livewire" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />

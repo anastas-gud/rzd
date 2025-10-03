@@ -11,6 +11,7 @@ class Station extends Model
     protected $table = 'stations';
     protected $fillable = [
         'title',
+        'city',
         'address',
         'photo_path',
         'phone',
@@ -103,10 +104,63 @@ class Station extends Model
     }
 
     /**
+     * Scope для поиска по городу
+     */
+    public function scopeWhereCity($query, $city)
+    {
+        return $query->where('city', 'like', "%{$city}%");
+    }
+
+    /**
+     * Scope для станций в определенном городе
+     */
+    public function scopeInCity($query, $city)
+    {
+        return $query->where('city', $city);
+    }
+
+    /**
      * Scope для поиска по телефону
      */
     public function scopeByPhone($query, $phone)
     {
         return $query->where('phone', 'like', "%{$phone}%");
+    }
+
+
+    /**
+     * Найти станции по городу
+     */
+    public static function whereCity($city)
+    {
+        return static::where('city', $city);
+    }
+
+    /**
+     * Создать или найти станцию
+     */
+    public static function firstOrCreateByTitle($title, $city, $address = null, $phone = null)
+    {
+        return static::firstOrCreate(
+            [
+                'title' => $title,
+                'city' => $city,
+            ],
+            [
+                'address' => $address,
+                'phone' => $phone,
+            ]
+        );
+    }
+
+    /**
+     * Получить список всех городов, где есть станции
+     */
+    public static function getCities()
+    {
+        return static::select('city')
+            ->distinct()
+            ->orderBy('city')
+            ->pluck('city');
     }
 }
