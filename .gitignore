@@ -1,1 +1,12 @@
 /.idea/
+/docker/rzd_db_data/base/
+/docker/rzd_db_data/global/
+/docker/rzd_db_data/pg_logical/
+/docker/rzd_db_data/pg_multixact/
+/docker/rzd_db_data/pg_subtrans/
+/docker/rzd_db_data/pg_stat/
+/docker/rzd_db_data/pg_wal/
+/docker/rzd_db_data/pg_xact/
+/docker/rzd_db_data/postgresql.auto.conf
+/docker/rzd_db_data/postmaster.opts
+/docker/rzd_db_data/postmaster.pid
