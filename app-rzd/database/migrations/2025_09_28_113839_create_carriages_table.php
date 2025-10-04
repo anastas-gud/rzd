@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('carriages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('train_id')->constrained()->onDelete('cascade'); // Связь с поездами
-            $table->foreignId('carriage_type_id')->constrained()->onDelete('cascade'); // Связь с типами вагонов
+            $table->foreignIdFor(\App\Models\Train::class,'train_id')->constrained()->onDelete('cascade'); // Связь с поездами
+            $table->foreignIdFor(\App\Models\CarriageType::class,'carriage_type_id')->constrained('carriage_types')->onDelete('cascade'); // Связь с типами вагонов
             $table->integer('number'); // Номер вагона в поезде
             $table->timestamps(); // created_at и updated_at
 

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Связь с пользователями
-            $table->string('status')->default('pending'); // Статус бронирования
+            $table->foreignIdFor(\App\Models\User::class,'user_id')->constrained()->onDelete('cascade'); // Связь с пользователями
+            $table->enum('status', ['BOOKED', 'PAID', 'CANCELLED'])->default('BOOKED'); // Статус бронирования
             $table->timestamp('expires_at')->nullable(); // Когда истекает бронь
             $table->decimal('total_price', 10, 2); // Общая стоимость
             $table->timestamps(); // created_at и updated_at
