@@ -22,6 +22,9 @@ class DatabaseSeeder extends Seeder
             StationSeeder::class,
             RouteSeeder::class,
             TripSeeder::class,
+            SeatSeeder::class,
+            ServiceSeeder::class,
+            PrivilegeSeeder::class,
         ]);
     }
 }
