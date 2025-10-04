@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('stations', function (Blueprint $table) {
             $table->id();
             $table->string('title'); // Название станции
+            $table->string('city');
             $table->text('address'); // Адрес станции
             $table->string('photo_path')->nullable(); // Путь к фото (может быть пустым)
             $table->string('phone')->nullable(); // Телефон станции (может быть пустым)

@@ -14,16 +14,14 @@ return new class extends Migration
         Schema::create('booking_passengers', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(\App\Models\Booking::class,'booking_id')->constrained()->onDelete('cascade'); // Связь с бронированиями
-            $table->date('date_of_birth'); // Дата рождения
-            $table->foreignIdFor(\App\Models\Passport::class,'passport_id')->constrained()->onDelete('cascade'); // Связь с паспортами
+            $table->foreignIdFor(\App\Models\Document::class,'document_id')->constrained()->onDelete('cascade'); // Связь с документами
             $table->foreignIdFor(\App\Models\Name::class,'name_id')->constrained()->onDelete('cascade'); // Связь с именами
             $table->foreignIdFor(\App\Models\Contact::class,'contact_id')->constrained()->onDelete('cascade'); // Связь с контактами
             $table->timestamps(); // created_at и updated_at
 
             // Индексы для быстрого поиска
             $table->index('booking_id');
-            $table->index('date_of_birth');
-            $table->index('passport_id');
+            $table->index('document_id');
         });
     }
 

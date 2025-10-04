@@ -11,13 +11,9 @@ class BookingPassenger extends Model
     protected $table = 'booking_passengers';
     protected $fillable = [
         'booking_id',
-        'date_of_birth',
-        'passport_id',
+        'document_id',
         'name_id',
         'contact_id',
-    ];
-    protected $casts = [
-        'date_of_birth' => 'date',
     ];
 
     /**
@@ -31,9 +27,9 @@ class BookingPassenger extends Model
     /**
      * Паспортные данные
      */
-    public function passport()
+    public function document()
     {
-        return $this->belongsTo(Passport::class);
+        return $this->belongsTo(Document::class);
     }
 
     /**
@@ -71,14 +67,6 @@ class BookingPassenger extends Model
     }
 
     /**
-     * Получить возраст пассажира
-     */
-    public function getAgeAttribute()
-    {
-        return $this->date_of_birth->age;
-    }
-
-    /**
      * Получить полное имя пассажира
      */
     public function getFullNameAttribute()
@@ -105,9 +93,9 @@ class BookingPassenger extends Model
     /**
      * Получить данные паспорта
      */
-    public function getPassportNumberAttribute()
+    public function getDocumentNumberAttribute()
     {
-        return $this->passport->full_number ?? null;
+        return $this->document()->full_number ?? null;
     }
 
     /**
@@ -159,33 +147,9 @@ class BookingPassenger extends Model
     }
 
     /**
-     * Scope для поиска по дате рождения
-     */
-    public function scopeByBirthDate($query, $date)
-    {
-        return $query->where('date_of_birth', $date);
-    }
-
-    /**
-     * Scope для детей
-     */
-    public function scopeChildren($query)
-    {
-        return $query->where('date_of_birth', '>', now()->subYears(18));
-    }
-
-    /**
-     * Scope для взрослых
-     */
-    public function scopeAdults($query)
-    {
-        return $query->where('date_of_birth', '<=', now()->subYears(18));
-    }
-
-    /**
      * Создать пассажира для бронирования
      */
-    public static function createForBooking($bookingId, $nameData, $contactData, $passportData, $dateOfBirth)
+    public static function createForBooking($bookingId, $nameData, $contactData, $documentData)
     {
         // Создаем или находим имя
         $name = Name::firstOrCreateByFullName(
@@ -201,18 +165,19 @@ class BookingPassenger extends Model
         );
 
         // Создаем или находим паспорт
-        $passport = Passport::firstOrCreateByNumber(
-            $passportData['serial'],
-            $passportData['number']
+        $document = Document::firstOrCreateByNumber(
+            $documentData['serial'],
+            $documentData['number'],
+            $documentData['date_of_birth'],
+            $documentData['type_of_document'],
         );
 
         // Создаем пассажира
         return static::create([
             'booking_id' => $bookingId,
-            'date_of_birth' => $dateOfBirth,
             'name_id' => $name->id,
             'contact_id' => $contact->id,
-            'passport_id' => $passport->id,
+            'document_id' => $document->id,
         ]);
     }
 }

@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('passports', function (Blueprint $table) {
+        Schema::create('documents', function (Blueprint $table) {
             $table->id();
+            $table->date('date_of_birth');
             $table->string('serial'); // Серия паспорта
             $table->string('number'); // Номер паспорта
+            $table->enum('type_of_document', ['PASSPORT', 'BIRTH CERTIFICATE'])->default('PASSPORT');
             $table->timestamps(); // created_at и updated_at
 
             // Уникальность паспорта
@@ -30,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('passports');
+        Schema::dropIfExists('documents');
     }
 };
