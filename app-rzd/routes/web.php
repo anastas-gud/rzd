@@ -14,14 +14,6 @@ Route::get('/register', function () {
     return view('register');
 });
 
-Route::get('/', function () {
-    return view('home');
-});
+Route::get('/', fn() => view('home'))->name('home');
 
-Route::get('/search-results', function () {
-    return view('search-results');
-});
-
-Route::get('/booking', function () {
-    return view('booking');
-});
+Route::get('/search-trips', [TripController::class, 'search'])->name('search-trips');

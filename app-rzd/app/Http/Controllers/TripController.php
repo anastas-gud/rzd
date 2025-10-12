@@ -6,6 +6,7 @@ use App\Http\Requests\TripSeatsRequest;
 use App\Models\Trip;
 use App\Services\TripService;
 use Illuminate\Http\JsonResponse;
+use Log;
 
 class TripController extends Controller
 {
@@ -17,31 +18,38 @@ class TripController extends Controller
     }
 
     // GET /api/search-trips
-    public function search(SearchTripsRequest $request): JsonResponse
+    public function search(SearchTripsRequest $request)
     {
         $data = $request->validated();
-        $res = $this->service->searchTrips(
-            $data['from_city'],
-            $data['to_city'],
-            $data['date'],
-            (int)$data['passenger_count']
+        $fromCity = $data['from_city'];
+        $toCity = $data['to_city'];
+        $date = $data['date'];
+        $passengerCount = (int)$data['passenger_count'];
+
+        $trips = $this->service->searchTrips(
+            $fromCity,
+            $toCity,
+            $date,
+            $passengerCount            
         );
-        return response()->json($res);
+        return view('search-trips', [
+            'trips' => $trips,
+            'search' => compact('fromCity', 'toCity', 'date', 'passengerCount'),
+        ]);
     }
 
     // GET /api/trips/{trip}
-    public function show(Trip $trip): JsonResponse
+    public function show(Trip $trip)
     {
-//        if ($trip->start_timestamp->isPast()) {   //TODO: return this line!!!
-//            return response()->json(['message' => 'not found'], 404);
-//        }
+    //    if ($trip->start_timestamp->isPast()) {   //TODO: return this line!!!
+    //        return response()->json(['message' => 'not found'], 404);
+    //    }
 
-        if ($trip->is_denied) {
-            return response()->json(['message' => 'not found'], 404);
-        }
+        abort_if($trip->is_denied, 404);
 
         $details = $this->service->getTripDetails($trip->id);
-        return response()->json($details);
+        $details = $this->service->getTripDetails($trip->id);
+        return view('trips.show', compact('details'));
     }
 
     // GET /api/trips/{trip}/seats

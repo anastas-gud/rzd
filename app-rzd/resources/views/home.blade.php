@@ -5,7 +5,7 @@
         <div class="home-bar">
             <div class="home-bar-content">
                 <h1><span>КУПИТЬ БИЛЕТ</span></h1>
-                @livewire('search-form')
+                @livewire('search-trips-form')
             </div>
         </div>
     </section>
