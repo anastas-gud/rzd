@@ -1,6 +1,6 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TripController;
 
 Route::get('/auth-modal', function () {
     return view('auth-modal');
@@ -14,14 +14,6 @@ Route::get('/register', function () {
     return view('register');
 });
 
-Route::get('/', function () {
-    return view('home');
-});
+Route::get('/', fn() => view('home'))->name('home');
 
-Route::get('/search-trips', function () {
-    return view('search-trips');
-});
-
-Route::get('/trips', function () {
-    return view('trips');
-});
+Route::get('/search-trips', [TripController::class, 'search'])->name('search-trips');
