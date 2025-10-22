@@ -21,11 +21,13 @@ class BookingController extends Controller
     public function create(CreateBookingRequest $request): JsonResponse
     {
         $data = $request->validated();
+
         $res = $this->service->createBooking(
             (int)$data['trip_id'],
             $data['selected_seat_ids'],
-            $data['contact'] ?? null
+            $data['passengers'] // передаём пассажиров
         );
+
         return response()->json($res, 201);
     }
 

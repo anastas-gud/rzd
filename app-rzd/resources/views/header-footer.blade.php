@@ -20,6 +20,30 @@
             <span>БезПрицепа</span>
         </div>
 
+        <div class="flex items-center gap-4">
+            @auth
+                <!-- Для авторизованных пользователей -->
+                <span class="text-gray-800">{{ Auth::user()->name->name . ' ' . Auth::user()->name->surname }}</span>
+
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 transition">
+                        Выход
+                    </button>
+                </form>
+            @else
+                <!-- Для гостей -->
+                <a href="{{ url('/login') }}"
+                   class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition">
+                    Вход
+                </a>
+                <a href="{{ url('/register') }}"
+                   class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition">
+                    Регистрация
+                </a>
+            @endauth
+        </div>
+
         @livewire('auth-modal')
     </header>
 

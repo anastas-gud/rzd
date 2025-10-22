@@ -4,13 +4,45 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rule;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 
-class User extends Model
+class User extends Authenticatable implements AuthenticatableContract
 {
-    use HasFactory;
+    use HasFactory, HasApiTokens, Notifiable;
     protected $table = 'users';
     protected $fillable = ['login','password','role_id','contact_id','name_id','created_at','updated_at'];
+
+    protected $hidden = [
+        'password',
+    ];
+
+    public function username(): string
+    {
+        return 'login';
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role->title === 'ADMIN';
+    }
+
+    public function isManager(): bool
+    {
+        return $this->role->title === 'MANAGER';
+    }
+
+    public function isUser(): bool
+    {
+        return $this->role->title === 'USER';
+    }
+
+    public function hasRole(string $role): bool
+    {
+        return $this->role->title === strtoupper($role);
+    }
 
     // РАЗОБРАТЬСЯ С ЭТОГО МОМЕНТА
     /**

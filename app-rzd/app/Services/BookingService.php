@@ -15,18 +15,28 @@ use App\Models\Ticket;
 use App\Models\Trip;
 use App\Helpers\BookingPlaceholders;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class BookingService
 {
-    public function createBooking(int $tripId, array $selectedSeatIds, ?array $contact = null): array
+    public function createBooking(int $tripId, array $selectedSeatIds, array $passengers): array
     {
         $trip = Trip::findOrFail($tripId);
         if ($trip->is_denied) throw new \Exception('Trip denied');
         // if ($trip->start_timestamp->isPast()) throw new \Exception('Trip already started'); //TODO: return this line!!!
 
-        return DB::transaction(function() use($trip, $selectedSeatIds, $contact) {
+        if (count($selectedSeatIds) !== count($passengers)) {
+            throw new \Exception('Количество пассажиров должно совпадать с количеством выбранных мест');
+        }
+
+        $user = Auth::user();
+        if (!$user) {
+            throw new \Exception('Пользователь не авторизован');
+        }
+
+        return DB::transaction(function() use($trip, $selectedSeatIds, $passengers, $user) {
             $now = Carbon::now();
             $ttlMinutes = (int)config('booking.ttl_minutes', 60);
             $expiresAt = $now->copy()->addMinutes($ttlMinutes);
@@ -64,39 +74,43 @@ class BookingService
             }
 
             $booking = Booking::create([
-                'user_id' => config('booking.guest_user_id'),
+                'user_id' => $user->id,
                 'status' => 'BOOKED',
                 'expires_at' => $expiresAt,
                 'total_price' => 0,
             ]);
 
-            // создаём контакт
-            if ($contact && (isset($contact['phone']) || isset($contact['email']))) {
-                $contactModel = Contact::create([
-                    'phone' => $contact['phone'] ?? null,
-                    'email' => $contact['email'] ?? null,
-                ]);
-            } else {
-                $contactModel = Contact::create(BookingPlaceholders::contact());
-            }
-
             $ticketsCreated = [];
             $total = '0.00';
 
-            foreach ($seats as $seat) {
-                $name = Name::create(BookingPlaceholders::name());
-                $document = Document::create(BookingPlaceholders::document());
+            foreach ($seats as $index => $seat) {
+                $passenger = $passengers[$index];
+
+                // создаем ФИО
+                $name = Name::create([
+                    'name' => $passenger['name'] ?? 'Имя',
+                    'surname' => $passenger['surname'] ?? 'Фамилия',
+                    'patronymic' => $passenger['patronymic'] ?? null,
+                ]);
+
+                // создаем документ
+                $document = Document::create([
+                    'date_of_birth' => $passenger['date_of_birth'],
+                    'serial' => $passenger['serial'],
+                    'number' => $passenger['number'],
+                    'type' => $passenger['document_type'] ?? 'PASSPORT',
+                ]);
 
                 $bp = BookingPassenger::create([
                     'booking_id' => $booking->id,
                     'document_id' => $document->id,
                     'name_id' => $name->id,
-                    'contact_id' => $contactModel->id,
+                    'contact_id' => $user->contact_id,
                 ]);
 
                 $ticketCode = strtoupper(Str::substr(Str::uuid()->toString(), 0, 8));
                 $ticket = Ticket::create([
-                    'user_id' => config('booking.guest_user_id'),
+                    'user_id' => $user->id,
                     'trip_id' => $trip->id,
                     'final_price' => $seat->price,
                     'seat_id' => $seat->id,
