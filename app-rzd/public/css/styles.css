@@ -1,6 +1,10 @@
 body {
     background-color: #e9eaed;
     font-family: 'Montserrat', sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    color: #3f2c51;
 }
 
 /* ШАПКА */
@@ -231,6 +235,7 @@ footer {
     color: white;
     padding: 30px 20px;
     border-top: 3px solid #faac70;
+    margin-top: auto;
 }
 
 .footer-content {
@@ -294,6 +299,7 @@ footer {
     display: flex;
     flex-direction: column;
     gap: 30px;
+    flex: 1;
 }
 
 .trips-empty-p {
