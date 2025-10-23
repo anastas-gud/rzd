@@ -25,7 +25,6 @@ class BookingController extends Controller
         $res = $this->service->createBooking(
             (int)$data['trip_id'],
             $data['selected_seat_ids'],
-            $data['passengers'] // передаём пассажиров
         );
 
         return response()->json($res, 201);

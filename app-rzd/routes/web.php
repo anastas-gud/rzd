@@ -2,8 +2,6 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TripController;
-use App\Livewire\Auth\LoginForm;
-use App\Livewire\Auth\RegisterForm;
 use Illuminate\Support\Facades\Route;
 
 // Публичные маршруты

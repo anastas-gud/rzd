@@ -61,7 +61,7 @@ class ServiceSeeder extends Seeder
         }
 
         // Создаем дополнительные случайные услуги
-        Service::factory()->count(3)->create();
+//        Service::factory()->count(3)->create();
 
         $this->command->info('Услуги созданы успешно!');
         $this->command->info('Всего услуг: ' . Service::count());

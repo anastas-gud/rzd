@@ -18,25 +18,21 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-
+// TODO сделать истечение бронирования
 class BookingService
 {
-    public function createBooking(int $tripId, array $selectedSeatIds, array $passengers): array
+    public function createBooking(int $tripId, array $selectedSeatIds): array
     {
         $trip = Trip::findOrFail($tripId);
         if ($trip->is_denied) throw new \Exception('Trip denied');
         // if ($trip->start_timestamp->isPast()) throw new \Exception('Trip already started'); //TODO: return this line!!!
-
-        if (count($selectedSeatIds) !== count($passengers)) {
-            throw new \Exception('Количество пассажиров должно совпадать с количеством выбранных мест');
-        }
 
         $user = Auth::user();
         if (!$user) {
             throw new \Exception('Пользователь не авторизован');
         }
 
-        return DB::transaction(function() use($trip, $selectedSeatIds, $passengers, $user) {
+        return DB::transaction(function() use($trip, $selectedSeatIds, $user) {
             $now = Carbon::now();
             $ttlMinutes = (int)config('booking.ttl_minutes', 60);
             $expiresAt = $now->copy()->addMinutes($ttlMinutes);
@@ -83,29 +79,16 @@ class BookingService
             $ticketsCreated = [];
             $total = '0.00';
 
-            foreach ($seats as $index => $seat) {
-                $passenger = $passengers[$index];
-
-                // создаем ФИО
-                $name = Name::create([
-                    'name' => $passenger['name'] ?? 'Имя',
-                    'surname' => $passenger['surname'] ?? 'Фамилия',
-                    'patronymic' => $passenger['patronymic'] ?? null,
-                ]);
-
-                // создаем документ
-                $document = Document::create([
-                    'date_of_birth' => $passenger['date_of_birth'],
-                    'serial' => $passenger['serial'],
-                    'number' => $passenger['number'],
-                    'type' => $passenger['document_type'] ?? 'PASSPORT',
-                ]);
+            foreach ($seats as $seat) {
+                $name = Name::create(BookingPlaceholders::name());
+                $document = Document::create(BookingPlaceholders::document());
+                $contact = Contact::create(BookingPlaceholders::contact());
 
                 $bp = BookingPassenger::create([
                     'booking_id' => $booking->id,
                     'document_id' => $document->id,
                     'name_id' => $name->id,
-                    'contact_id' => $user->contact_id,
+                    'contact_id' => $contact->id,
                 ]);
 
                 $ticketCode = strtoupper(Str::substr(Str::uuid()->toString(), 0, 8));
@@ -171,6 +154,17 @@ class BookingService
                 throw new \RuntimeException('Booking is expired, need to send user to book seats again');
             }
 
+            if (!empty($privilegesInput)) {
+                $passengerIds = collect($privilegesInput)->pluck('booking_passenger_id')->unique();
+                $countValid = BookingPassenger::where('booking_id', $bookingId)
+                    ->whereIn('id', $passengerIds)
+                    ->count();
+
+                if ($countValid !== $passengerIds->count()) {
+                    throw new \RuntimeException('One or more booking_passenger_id do not belong to this booking.');
+                }
+            }
+
             $servicesSaved = [];
             foreach ($servicesInput as $s) {
                 $service = Service::findOrFail($s['service_id']);
@@ -189,11 +183,23 @@ class BookingService
                 ];
             }
 
+            foreach ($privilegesInput as $p) {
+                $bpId = $p['booking_passenger_id'];
+                $privilegeId = $p['privilege_id'];
+
+                BookingPassengerPrivilege::create(
+                    [
+                        'booking_passenger_id' => $bpId,
+                        'privilege_id' => $privilegeId,
+                    ], []
+                );
+            }
+
             $tickets = Ticket::whereHas('bookingPassenger', function($q) use ($bookingId) {
                 $q->where('booking_id', $bookingId);
             })->get();
             $totalTicketsSum = '0.00';
-            foreach ($tickets as $ticket) {
+            foreach ($tickets as $ticket) {   //TODO не работает подсчет скидки от льготы
                 $bpId = $ticket->booking_passenger_id;
                 $privRecord = BookingPassengerPrivilege::where('booking_passenger_id', $bpId)->first();
                 $seatPrice = (string)$ticket->seat->price;
