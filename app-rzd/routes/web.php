@@ -2,14 +2,12 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TripController;
-use App\Livewire\Auth\LoginForm;
-use App\Livewire\Auth\RegisterForm;
 use Illuminate\Support\Facades\Route;
 
 // Публичные маршруты
 Route::get('/', fn() => view('home'))->name('home');
 Route::get('/search-trips', [TripController::class, 'search'])->name('search-trips');
-Route::get('/auth-modal', function () { return view('auth-modal'); });
+Route::get('/trips/{trip}', [TripController::class, 'show'])->name('trips');
 
 // Аутентификация
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');

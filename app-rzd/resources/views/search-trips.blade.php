@@ -1,6 +1,6 @@
 @extends('header-footer')
 @section('content')
-<div>    
+<div class="trips-main-div">    
     @livewire('search-trips-form', [
         'from_city' => $search['fromCity'] ?? '',
         'to_city' => $search['toCity'] ?? '',

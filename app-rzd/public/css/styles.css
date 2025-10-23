@@ -24,14 +24,32 @@ header {
     margin: auto 0;
 }
 
-.profile-icon {
-    height: 50px;
-    width: 50px;
-    background-image: url("../images/profile.png");
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    margin: auto 0;
+.login-div {
+    display: flex;
+    gap: 15px;
+}
+
+.login-button {
+    background: #faac70;
+    color: white;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 120px;
+    white-space: nowrap;
+    text-align: center;
+    height: 30px;
+    margin: auto;
+    padding: 4px 3px 0px 3px;
+}
+
+.login-button:hover {
+    background-color: white;
+    color: #faac70;
 }
 
 /* ГЛАВНАЯ СТРАНИЦА */
@@ -44,12 +62,11 @@ header {
     background-repeat: no-repeat;
     margin: 0 auto;
     display: flex;
-    /* align-items: center; */
     justify-content: center;
 }
 
 .home-bar-content {
-    width: 70%;    
+    width: 70%;
     padding-top: 100px;
 }
 
@@ -60,7 +77,7 @@ header {
     margin-bottom: 30px;
 }
 
-.home-bar-content h1 span {    
+.home-bar-content h1 span {
     background-color: #8c487c;
     padding: 5px 15px;
 }
@@ -70,7 +87,7 @@ header {
     background-color: white;
     display: flex;
     flex-wrap: wrap;
-    min-height: 60px;    
+    min-height: 60px;
     gap: 3px;
 }
 
@@ -80,7 +97,7 @@ header {
     display: flex;
 }
 
-.search-input-field {    
+.search-input-field {
     padding: 15px 20px;
     background: white;
     font-size: 20px;
@@ -89,7 +106,7 @@ header {
     outline: none;
     height: 100%;
     box-sizing: border-box;
-    width: 100%;    
+    width: 100%;
 }
 
 .search-input-field::placeholder {
@@ -227,6 +244,7 @@ footer {
     margin: 0 0 20px 0;
     color: #faac70;
 }
+
 .footer-contacts-div {
     display: flex;
     justify-content: space-between;
@@ -266,4 +284,227 @@ footer {
     font-size: 14px;
     color: #ccc;
     margin: 0;
+}
+
+/* МАРШРУТЫ */
+.trips-main-div {
+    max-width: calc(100vw - 21%);
+    margin: auto;
+    padding: 30px 0px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.trips-empty-p {
+    margin: auto;
+}
+
+.trips-div {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.trips-trip-block {
+    background-color: white;
+    padding: 20px;
+}
+
+.trips-small-p {
+    font-size: 16px;
+}
+
+.trips-small-p-bold {
+    font-weight: 600;
+}
+
+.trips-content-wrapper {
+    display: flex;
+    gap: 30px;
+    padding-top: 15px;
+}
+
+.trips-routes {
+    flex: 3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    position: relative;
+}
+
+.trips-routes::after {
+    content: '';
+    position: absolute;
+    right: -15px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 80%;
+    width: 1px;
+    background-color: #5f4974;
+    opacity: 0.5;
+}
+
+.trips-routes-p-time {
+    font-size: 45px;
+    color: #8c487c;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.route-time-block {
+    flex: 0 1 250px;
+}
+
+.route-center-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    min-width: 300px;
+    text-align: center;
+    margin: 0 20px;
+}
+
+.arrow-with-circle {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    min-width: 300px;
+}
+
+.arrow-circle {
+    width: 12px;
+    height: 12px;
+    border: 2px solid #8c487c;
+    background-color: #8c487c;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-right: 2px;
+}
+
+.arrow-line {
+    flex: 1;
+    height: 3px;
+    background: #8c487c;
+    position: relative;
+    min-width: 30px;
+}
+
+.arrow-head {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    width: 10px;
+    height: 10px;
+    border-top: 3px solid #8c487c;
+    border-right: 3px solid #8c487c;
+    transform: translateY(-50%) rotate(45deg);
+}
+
+.trips-seats-block {
+    flex: 1;
+    min-width: 300px;
+}
+
+.trips-seats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.trips-seats-p {
+    font-size: 17px;
+}
+
+.trips-seats-p-bold {
+    color: #8c487c;
+    font-weight: 600;
+}
+
+@media (max-width: 1600px) {
+    .trips-routes-p-time {
+        font-size: 40px;
+    }
+
+    .arrow-with-circle {
+        max-width: 350px;
+        min-width: 250px;
+    }
+}
+
+@media (max-width: 1190px) {
+    .trips-content-wrapper {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .trips-routes {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .trips-routes::after {
+        display: none;
+    }
+
+    .route-time-block {
+        flex: 1;
+    }
+
+    .arrow-with-circle {
+        max-width: 400px;
+        min-width: 300px;
+    }
+
+    .trips-routes-p-time {
+        font-size: 35px;
+    }
+
+    .route-time-block {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        min-width: auto;
+        gap: 20px;
+    }
+
+    .route-time-block>* {
+        text-align: left;
+    }
+}
+
+@media (max-width: 480px) {
+    .trips-trip-block {
+        padding: 15px;
+    }
+
+    .trips-routes-p-time {
+        font-size: 25px;
+    }
+
+    .arrow-with-circle {
+        max-width: 200px;
+        min-width: 100px;
+    }
+
+    .arrow-with-circle {
+        min-width: 80px;
+    }
+
+    .trips-small-p {
+        font-size: 14px;
+    }
+
+    .trips-seats-p {
+        font-size: 15px;
+    }
+
+    .trips-seats-block {
+        min-width: 200px;
+    }
 }
