@@ -10,41 +10,40 @@
         rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body>
     <!-- Шапка -->
     <header>
         <div class="logo-div">
-            <img src="/images/logo.png" alt="ОАО &quot;БезПрицепа&quot;" class="h-10">
+            <a href="{{ route('home') }}">
+                <img src="/images/logo.png" alt="ОАО &quot;БезПрицепа&quot;" class="h-10">
+            </a>
             <span>БезПрицепа</span>
         </div>
 
-        <div class="flex items-center gap-4">
+        <div class="login-div">
             @auth
                 <!-- Для авторизованных пользователей -->
-                <span class="text-gray-800">{{ Auth::user()->name->name . ' ' . Auth::user()->name->surname }}</span>
+                <span class="">{{ Auth::user()->name->name . ' ' . Auth::user()->name->surname }}</span>
 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit" class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 transition">
+                    <button type="submit" class="login-button">
                         Выход
                     </button>
                 </form>
             @else
                 <!-- Для гостей -->
-                <a href="{{ url('/login') }}"
-                   class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition">
+                <a href="{{ url('/login') }}" class="login-button">
                     Вход
                 </a>
-                <a href="{{ url('/register') }}"
-                   class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition">
+                <a href="{{ url('/register') }}" class="login-button">
                     Регистрация
                 </a>
             @endauth
         </div>
-
-        @livewire('auth-modal')
     </header>
 
     <!-- Основной контент -->
@@ -63,11 +62,13 @@
                 </div>
                 <div class="footer-contacts-item">
                     <span class="footer-contacts-item-title">info@without-trailer.ru</span>
-                    <span class="footer-contacts-item-description">для вопросов, связанных с электронными билетами</span>
+                    <span class="footer-contacts-item-description">для вопросов, связанных с электронными
+                        билетами</span>
                 </div>
                 <div class="footer-contacts-item">
                     <span class="footer-contacts-item-title">@without-trailer</span>
-                    <span class="footer-contacts-item-description">для вопросов, связанных с электронными билетами</span>
+                    <span class="footer-contacts-item-description">для вопросов, связанных с электронными
+                        билетами</span>
                 </div>
             </div>
             <div class="footer-copyright-div">

@@ -48,8 +48,7 @@ class TripController extends Controller
         abort_if($trip->is_denied, 404);
 
         $details = $this->service->getTripDetails($trip->id);
-        $details = $this->service->getTripDetails($trip->id);
-        return view('trips.show', compact('details'));
+        return view('trips', compact('details'));
     }
 
     // GET /api/trips/{trip}/seats
