@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TripController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,8 +20,17 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Защищенные маршруты
 Route::middleware(['auth'])->group(function () {
-    Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
-    // Добавьте сюда маршруты бронирования
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+
+    Route::get('/bookings/active', [BookingController::class, 'active']);
+
+    Route::post('/profile/tickets/{ticket}/cancel', [ProfileController::class, 'cancelTicket'])->name('profile.ticket.cancel');
+
+
+    Route::post('/bookings/{booking}/pay', [BookingController::class, 'pay']);
+
 });
 
 Route::middleware(['auth', 'role:ADMIN'])->group(function () {   // future adminka

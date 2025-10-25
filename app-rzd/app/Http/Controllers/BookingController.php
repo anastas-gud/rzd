@@ -86,4 +86,24 @@ class BookingController extends Controller
             return response()->json(['message' => $ex->getMessage()], 400);
         }
     }
+    // GET /api/bookings/active
+    public function active(): JsonResponse
+    {
+        try {
+            $res = $this->service->getUserBookings();
+            return response()->json($res);
+        } catch (\RuntimeException $ex) {
+            return response()->json(['message' => $ex->getMessage()], 400);
+        }
+    }
+    // POST /api/bookings/{booking}/pay
+    public function pay(Booking $booking): JsonResponse
+    {
+        try {
+            $res = $this->service->pay($booking->id);
+            return response()->json($res);
+        } catch (\RuntimeException $ex) {
+            return response()->json(['message' => $ex->getMessage()], 400);
+        }
+    }
 }

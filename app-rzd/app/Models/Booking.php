@@ -41,13 +41,29 @@ class Booking extends Model
      */
     public function tickets()
     {
-        return $this->hasMany(Ticket::class);
+        return $this->hasManyThrough(
+            \App\Models\Ticket::class,
+            \App\Models\BookingPassenger::class,
+            'booking_id',           // Foreign key on booking_passengers table
+            'booking_passenger_id', // Foreign key on tickets table
+            'id',                   // Local key on bookings table
+            'id'                    // Local key on booking_passengers table
+        );
     }
 
-    /**
-     * Проверить, истекла ли бронь
-     */
-    public function getIsExpiredAttribute()
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Автоматическая проверка при загрузке модели
+        static::retrieved(function ($booking) {
+            if ($booking->isExpired() && $booking->status === 'BOOKED') {
+                $booking->update(['status' => 'CANCELLED']);
+            }
+        });
+    }
+
+    public function isExpired(): bool
     {
         return $this->expires_at && $this->expires_at->isPast();
     }

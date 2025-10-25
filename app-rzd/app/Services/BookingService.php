@@ -18,7 +18,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-// TODO сделать истечение бронирования
+// TODO сделать истечение бронирования (перевод в статус)
 class BookingService
 {
     public function createBooking(int $tripId, array $selectedSeatIds): array
@@ -199,7 +199,7 @@ class BookingService
                 $q->where('booking_id', $bookingId);
             })->get();
             $totalTicketsSum = '0.00';
-            foreach ($tickets as $ticket) {   //TODO не работает подсчет скидки от льготы
+            foreach ($tickets as $ticket) {
                 $bpId = $ticket->booking_passenger_id;
                 $privRecord = BookingPassengerPrivilege::where('booking_passenger_id', $bpId)->first();
                 $seatPrice = (string)$ticket->seat->price;
@@ -465,4 +465,67 @@ class BookingService
             'privileges' => $privilegesOut,
         ];
     }
+    public function getUserBookings(): array
+    {
+        $user = Auth::user();
+        if (!$user) {
+            throw new \RuntimeException('Пользователь не авторизован');
+        }
+
+        $bookings = Booking::where('user_id', $user->id)
+            ->where('status', 'BOOKED')
+            ->where('expires_at', '>', now())
+            ->with(['tickets.trip.route.startStation', 'tickets.trip.route.endStation'])
+            ->get();
+
+        $out = [];
+
+        foreach ($bookings as $b) {
+            $trip = optional($b->tickets->first()->trip);
+            $out[] = [
+                'booking_id' => $b->id,
+                'created_at' => $b->created_at->toDateTimeString(),
+                'expires_at' => $b->expires_at->toDateTimeString(),
+                'total_price' => number_format((float)$b->total_price, 2, '.', ''),
+                'seats_count' => $b->tickets->count(),
+                'trip' => $trip ? [
+                    'trip_id' => $trip->id,
+                    'train_id' => $trip->train_id,
+                    'route_id' => $trip->route_id,
+                    'start_station' => $trip->route->startStation->title ?? null,
+                    'end_station' => $trip->route->endStation->title ?? null,
+                    'start_time' => $trip->start_timestamp->toDateTimeString(),
+                    'end_time' => $trip->end_timestamp->toDateTimeString(),
+                ] : null,
+            ];
+        }
+
+        return $out;
+    }
+
+    public function pay(int $bookingId): array   //TODO можно так то добавить проверку, обновились ли данные пассажиров(не дефолтные ли они)
+    {
+        return DB::transaction(function() use ($bookingId) {
+            $booking = Booking::lockForUpdate()->findOrFail($bookingId);
+
+            if ($booking->status !== 'BOOKED') {
+                throw new \RuntimeException('You can only pay for an active booking.');
+            }
+
+            if ($booking->expires_at <= now()) {
+                throw new \RuntimeException('The booking period has expired');
+            }
+
+            $booking->status = 'PAID';
+            $booking->save();
+
+            return [
+                'booking_id' => $booking->id,
+                'status' => $booking->status,
+                'total_price' => number_format((float)$booking->total_price, 2, '.', ''),
+            ];
+        });
+    }
+
+
 }

@@ -18,7 +18,17 @@ class Ticket extends Model
     ];
 
     public function bookingPassenger(): BelongsTo { return $this->belongsTo(BookingPassenger::class, 'booking_passenger_id'); }
-    public function booking(): BelongsTo { return $this->belongsTo(Booking::class, 'booking_id'); }
+    public function booking()
+    {
+        return $this->hasOneThrough(
+            \App\Models\Booking::class,
+            \App\Models\BookingPassenger::class,
+            'id',                // Foreign key on booking_passengers (local key for this relation)
+            'id',                // Foreign key on bookings table
+            'booking_passenger_id', // Local key on tickets table
+            'booking_id'            // Local key on booking_passengers table
+        );
+    }
     public function seat(): BelongsTo { return $this->belongsTo(Seat::class); }
     public function trip(): BelongsTo { return $this->belongsTo(Trip::class); }
     public function user(): BelongsTo { return $this->belongsTo(User::class); }
@@ -31,7 +41,7 @@ class Ticket extends Model
     public function passenger()
     {
         return $this->belongsTo(BookingPassenger::class, 'booking_passenger_id');
-    }   
+    }
 
     /**
      * Получить QR-код для билета

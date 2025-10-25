@@ -13,7 +13,7 @@
     <section>
         <div class="block-content-container">
             <div class="block-content-grid">
-                <livewire:block-content : href="/" icon="🎫" title="Мои билеты"
+                <livewire:block-content : href="/profile" icon="🎫" title="Мои билеты"
                     description="Личный кабинет пассажира. Просмотр и управление билетами.">
                 <livewire:block-content : href="/" icon="🚆" title="Поезда и маршруты"
                     description="Категории поездов, типы вагонов, услуги в поезде.">

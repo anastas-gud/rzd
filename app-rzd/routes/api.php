@@ -14,3 +14,4 @@ Route::post('/bookings/{booking}/options', [BookingController::class, 'applyOpti
 Route::get('/bookings/{booking}/passengers/form', [BookingController::class, 'passengersForm']);
 Route::post('/bookings/{booking}/passengers', [BookingController::class, 'updatePassengers']);
 Route::get('/bookings/{booking}/summary', [BookingController::class, 'summary']);
+Route::post('/bookings/{booking}/pay', [BookingController::class, 'pay']);

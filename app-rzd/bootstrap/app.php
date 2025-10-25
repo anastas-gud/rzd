@@ -19,6 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->appendToGroup('api', [
             \App\Http\Middleware\TestAuth::class,
         ]);
+        $middleware->append(\App\Http\Middleware\CheckExpiredBookings::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

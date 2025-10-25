@@ -1,6 +1,7 @@
 <?php
 namespace App\Providers;
 
+use App\Services\ProfileService;
 use Illuminate\Support\ServiceProvider;
 use App\Services\TripService;
 use App\Services\BookingService;
@@ -15,6 +16,10 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton(BookingService::class, function($app){
             return new BookingService();
+        });
+
+        $this->app->singleton(ProfileService::class, function($app){
+            return new ProfileService();
         });
     }
 
