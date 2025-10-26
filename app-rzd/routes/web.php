@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Route;
 // Публичные маршруты
 Route::get('/', fn() => view('home'))->name('home');
 Route::get('/search-trips', [TripController::class, 'search'])->name('search-trips');
-Route::get('/trips/{trip}', [TripController::class, 'show'])->name('trips');
+Route::get('/trips/{trip}/service', [TripController::class, 'show'])->name('trip-service');
+Route::get('/trips/{trip}/{carriage_type}/{carriage}/seats', [TripController::class, 'seats'])->name('trip-seats');
 
 // Аутентификация
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');

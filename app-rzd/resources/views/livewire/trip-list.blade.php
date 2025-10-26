@@ -3,7 +3,7 @@
         <p class="trips-empty-p">Нет доступных поездок.</p>
     @else
         @foreach($trips as $trip)
-            <a href="{{ route('trips', ['trip' => $trip['trip_id']]) }}">
+            <a href="{{ route('trip-service', ['trip' => $trip['trip_id']]) }}">
                 <div class="trips-trip-block">
                     <p class="trips-small-p">
                         <span class="trips-small-p-bold">Маршрут: {{ $trip['route_number'] }}</span>

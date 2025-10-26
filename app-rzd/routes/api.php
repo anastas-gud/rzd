@@ -5,8 +5,8 @@ use App\Http\Controllers\TripController;
 use App\Http\Controllers\BookingController;
 
 Route::get('/search-trips', [TripController::class, 'search']);
-Route::get('/trips/{trip}', [TripController::class, 'show']);
-Route::get('/trips/{trip}/seats', [TripController::class, 'seats']);
+Route::get('/trips/{trip}/service', [TripController::class, 'show']);
+Route::get('/trips/{trip}/{carriage_type}/{carriage}/seats', [TripController::class, 'seats']);
 
 Route::post('/bookings', [BookingController::class, 'create']);
 Route::get('/bookings/{booking}/options', [BookingController::class, 'options']);

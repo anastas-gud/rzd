@@ -26,9 +26,9 @@
         <div class="login-div">
             @auth
                 <!-- Для авторизованных пользователей -->
-                <span class="">{{ Auth::user()->name->name . ' ' . Auth::user()->name->surname }}</span>
+                <span class="" style="margin: auto;">{{ Auth::user()->name->name . ' ' . Auth::user()->name->surname }}</span>
 
-                <form method="POST" action="{{ route('logout') }}">
+                <form method="POST" action="{{ route('logout') }}" style="margin: auto;">
                     @csrf
                     <button type="submit" class="login-button">
                         Выход

@@ -14,10 +14,10 @@ class TripService
     public function searchTrips(string $fromCity, string $toCity, string $date, int $passengerCount): array
     {
         $startOfDay = Carbon::createFromFormat('Y-m-d', $date)->startOfDay();
-        $endOfDay   = Carbon::createFromFormat('Y-m-d', $date)->endOfDay();
+        $endOfDay = Carbon::createFromFormat('Y-m-d', $date)->endOfDay();
 
         $fromStationIds = Station::where('city', $fromCity)->pluck('id');
-        $toStationIds   = Station::where('city', $toCity)->pluck('id');
+        $toStationIds = Station::where('city', $toCity)->pluck('id');
 
         if ($fromStationIds->isEmpty() || $toStationIds->isEmpty()) {
             return [];
@@ -27,9 +27,10 @@ class TripService
             ->whereIn('end_station_id', $toStationIds)
             ->pluck('id');
 
-        if ($routeIds->isEmpty()) return [];
+        if ($routeIds->isEmpty())
+            return [];
 
-        $trips = Trip::with(['train.carriages.seats','route.startStation','route.endStation','train'])
+        $trips = Trip::with(['train.carriages.seats', 'route.startStation', 'route.endStation', 'train'])
             ->whereIn('route_id', $routeIds)
             ->whereBetween('start_timestamp', [$startOfDay, $endOfDay])
             ->where('is_denied', false)
@@ -74,8 +75,8 @@ class TripService
 
                 foreach ($seats as $seat) {
                     $typeId = $carriage->carriage_type_id;
-                    $price = (string)$seat->price;
-                    if (!isset($minPriceByType[$typeId]) || bccomp($price, (string)$minPriceByType[$typeId], 2) < 0) {
+                    $price = (string) $seat->price;
+                    if (!isset($minPriceByType[$typeId]) || bccomp($price, (string) $minPriceByType[$typeId], 2) < 0) {
                         $minPriceByType[$typeId] = $price;
                     }
                 }
@@ -88,7 +89,7 @@ class TripService
                     $minPriceArr[] = [
                         'carriage_type_id' => $typeId,
                         'title' => $type ? $type->title : 'Unknown',
-                        'min_price' => number_format((float)$minPrice, 2, '.', '')
+                        'min_price' => number_format((float) $minPrice, 2, '.', '')
                     ];
                 }
 
@@ -117,12 +118,10 @@ class TripService
         return $result;
     }
 
-    public function getTripDetails(int $tripId): array
+    public function getCarriageTypesForTrip(int $tripId): array
     {
-        $trip = Trip::with(['train.carriages.type','route.startStation','route.endStation','train'])->findOrFail($tripId);
-//        if ($trip->start_timestamp->isPast()) {  //TODO: return this line!!!
-//            abort(404);
-//        }
+        $trip = Trip::with(['train.carriages.type', 'train.carriages.seats', 'route.startStation', 'route.endStation'])
+            ->findOrFail($tripId);
 
         if ($trip->is_denied) {
             abort(404);
@@ -147,24 +146,36 @@ class TripService
             ->pluck('seat_id')
             ->toArray();
 
-        $carriagesOut = [];
+        $carriagesTypes = [];
+
         foreach ($trip->train->carriages as $carriage) {
             $seats = $carriage->seats;
-            $available = $seats->count() - collect($seats->pluck('id'))->intersect($occupiedTickets)->count();
+            $occupiedCount = $seats->pluck('id')->intersect($occupiedTickets)->count();
+            $available = $seats->count() - $occupiedCount;
 
-            $minPrice = $seats->min('price');
+            if ($available > 0 && $carriage->type) {
+                $typeId = $carriage->type->id;
+                $title = $carriage->type->title;
+                $carriageId = $carriage->id;
+                $minPrice = (float) $seats->min('price');
+                $maxPrice = (float) $seats->max('price');
 
-            $carriagesOut[] = [
-                'carriage_id' => $carriage->id,
-                'carriage_type' => [
-                    'id' => $carriage->type->id ?? null,
-                    'title' => $carriage->type->title ?? null,
-                    'seats_number' => $carriage->type->seats_number ?? null,
-                ],
-                'number' => $carriage->number,
-                'available_seats_count' => $available,
-                'seat_price_min' => number_format((float)$minPrice, 2, '.', ''),
-            ];
+                if (isset($carriagesTypes[$typeId])) {
+                    $carriagesTypes[$typeId]['seat_number'] += $available;
+                    $carriagesTypes[$typeId]['carriage_id'] = min($carriagesTypes[$typeId]['carriage_id'], $carriageId);
+                    $carriagesTypes[$typeId]['seat_price_min'] = min($carriagesTypes[$typeId]['seat_price_min'], $minPrice);
+                    $carriagesTypes[$typeId]['seat_price_max'] = max($carriagesTypes[$typeId]['seat_price_max'], $maxPrice);
+                } else {
+                    $carriagesTypes[$typeId] = [
+                        'type_id' => $typeId,
+                        'type_title' => $title,
+                        'seat_number' => $available,
+                        'carriage_id' => $carriageId,
+                        'seat_price_min' => $minPrice,
+                        'seat_price_max' => $maxPrice,
+                    ];
+                }
+            }
         }
 
         return [
@@ -173,6 +184,7 @@ class TripService
             'start_timestamp' => $trip->start_timestamp->toDateTimeString(),
             'end_timestamp' => $trip->end_timestamp->toDateTimeString(),
             'route' => [
+                'number' => $trip->route->number,
                 'start_station' => [
                     'id' => $trip->route->startStation->id,
                     'title' => $trip->route->startStation->title,
@@ -183,30 +195,22 @@ class TripService
                     'title' => $trip->route->endStation->title,
                     'city' => $trip->route->endStation->city,
                 ],
-                'number' => $trip->route->number,
             ],
-            'carriages' => $carriagesOut,
+            'carriages_types' => $carriagesTypes,
         ];
     }
 
-    public function getSeats(int $tripId, ?int $carriageId = null): array
+
+    public function getSeatsAndCarriagesForTripByCarriageType(int $tripId, int $carriageTypeId, int $carriageId): array
     {
-        $trip = Trip::with(['train.carriages.seats'])->findOrFail($tripId);
-        //        if ($trip->start_timestamp->isPast()) {  //TODO: return this line!!!
-//            abort(404);
-//        }
+        $trip = Trip::with(['train.carriages.type', 'train.carriages.seats', 'route.startStation', 'route.endStation'])
+            ->findOrFail($tripId);
 
         if ($trip->is_denied) {
-            abort(404);
+            abort(404, 'Trip is denied.');
         }
 
-        $carriages = $trip->train->carriages;
-        if ($carriageId) {
-            $carriages = $carriages->where('id', $carriageId);
-            if ($carriages->isEmpty()) abort(400, 'Carriage does not belong to the trip train.');
-        }
-
-        $occupied = Ticket::query()
+        $occupiedSeatIds = Ticket::query()
             ->where('trip_id', $trip->id)
             ->where('is_canceled', false)
             ->whereExists(function ($query) {
@@ -222,43 +226,84 @@ class TripService
                             });
                     });
             })
-            ->get();
+            ->pluck('seat_id')
+            ->toArray();
 
-        $occupiedBySeat = $occupied->groupBy('seat_id');
+        $occupiedSeatIds = collect($occupiedSeatIds);
+        $carriagesOut = collect();
+
+        foreach ($trip->train->carriages as $carriage) {
+            if ($carriage->type->id !== $carriageTypeId) {
+                continue;
+            }
+
+            $seats = $carriage->seats;
+            $occupiedCount = $occupiedSeatIds->intersect($seats->pluck('id'))->count();
+            $availableCount = $seats->count() - $occupiedCount;
+
+            if ($availableCount <= 0) {
+                continue;
+            }
+
+            $carriagesOut->push([
+                'carriage_id' => $carriage->id,
+                'carriage_type' => [
+                    'id' => $carriage->type->id,
+                    'title' => $carriage->type->title,
+                    'seats_number' => $carriage->type->seats_number,
+                ],
+                'number' => $carriage->number,
+                'available_seats_count' => $availableCount,
+            ]);
+        }
+
+        if ($carriagesOut->isEmpty()) {
+            abort(404, 'No carriages of this type with available seats found for this trip.');
+        }
+
+        $carriage = $trip->train->carriages->firstWhere('id', $carriageId);
+
+        if (!$carriage || $carriage->type->id !== $carriageTypeId) {
+            abort(400, 'Specified carriage does not belong to this trip or has wrong type.');
+        }
 
         $seatsOut = [];
-        $availableCount = 0;
+        foreach ($carriage->seats as $seat) {
+            $isAvailable = !$occupiedSeatIds->contains($seat->id);
+            $blockedUntil = null;
 
-        foreach ($carriages as $carriage) {
-            foreach ($carriage->seats as $seat) {
-                $isAvailable = true;
-                $reason = null;
-                $blockedUntil = null;
-
-                $occ = $occupiedBySeat->get($seat->id);
-                if ($occ && $occ->isNotEmpty()) {
-                    $isAvailable = false;
-                    $reason = 'occupied';
-                }
-
-                if ($isAvailable) $availableCount++;
-
-                $seatsOut[] = [
-                    'seat_id' => $seat->id,
-                    'carriage_id' => $carriage->id,
-                    'number' => $seat->number,
-                    'price' => number_format((float)$seat->price,2,'.',''),
-                    'is_available' => $isAvailable,
-                    'reason' => $reason,
-                    'blocked_until' => $blockedUntil,
-                ];
-            }
+            $seatsOut[] = [
+                'carriage_id' => $carriage->id,
+                'carriage_number' => $carriage->number,
+                'seat_id' => $seat->id,
+                'number' => $seat->number,
+                'price' => number_format((float) $seat->price, 2, '.', ''),
+                'is_available' => $isAvailable,
+                'reason' => $isAvailable ? null : 'occupied',
+                'blocked_until' => $blockedUntil,
+            ];
         }
 
         return [
             'trip_id' => $trip->id,
+            'train_title' => $trip->train->title,
+            'start_timestamp' => $trip->start_timestamp?->toDateTimeString(),
+            'end_timestamp' => $trip->end_timestamp?->toDateTimeString(),
+            'route' => [
+                'start_station' => [
+                    'id' => $trip->route->startStation->id,
+                    'title' => $trip->route->startStation->title,
+                    'city' => $trip->route->startStation->city,
+                ],
+                'end_station' => [
+                    'id' => $trip->route->endStation->id,
+                    'title' => $trip->route->endStation->title,
+                    'city' => $trip->route->endStation->city,
+                ],
+                'number' => $trip->route->number,
+            ],
+            'carriages' => $carriagesOut->values(),
             'seats' => $seatsOut,
-            'available_count' => $availableCount,
         ];
     }
 }

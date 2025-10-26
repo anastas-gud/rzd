@@ -6,12 +6,7 @@ use Livewire\Component;
 
 class TripList extends Component
 {
-    public $trips = [];
-
-    public function mount($trips = [])
-    {
-        $this->trips = $trips;
-    }
+    public $trips;
 
     public function render()
     {
