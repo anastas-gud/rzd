@@ -3,17 +3,13 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use Livewire\Attributes\Url;
-use Illuminate\Support\Facades\Http;
 
 class SearchTripsForm extends Component
 {
-    public $from_city = '';
-    public $to_city = '';
-    public $date = '';
+    public $from_city;
+    public $to_city;
+    public $date;
     public $passenger_count = 1;
-
-
 
     protected $rules = [
         'from_city' => 'required|string|min:2',
@@ -23,7 +19,7 @@ class SearchTripsForm extends Component
     ];
 
     public function mount()
-    {
+    {        
         $this->from_city = request('from_city', $this->from_city);
         $this->to_city = request('to_city', $this->to_city);
         $this->date = request('date', $this->date);

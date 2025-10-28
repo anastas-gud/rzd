@@ -2,15 +2,15 @@
     <form wire:submit.prevent="search">
         <div class="search-container">
             <div class="search-input-group">
-                <input type="text" wire:model="from_city" placeholder="ОТКУДА" class="search-input-field">
+                <input type="text" wire:model="from_city" placeholder="ОТКУДА" class="search-input-field" autocomplete="off">
                 @error('from_city') <span class="error-text">{{ $message }}</span> @enderror
             </div>
             <div class="search-input-group">
-                <input type="text" wire:model="to_city" placeholder="КУДА" class="search-input-field">
+                <input type="text" wire:model="to_city" placeholder="КУДА" class="search-input-field" autocomplete="off">
                 @error('to_city') <span class="error-text">{{ $message }}</span> @enderror
             </div>
             <div class="search-input-group">
-                <input type="date" wire:model="date" placeholder="ВЫЕЗД" class="search-input-field">
+                <input type="date" wire:model="date" placeholder="ВЫЕЗД" class="search-input-field" autocomplete="off">
                 @error('date') <span class="error-text">{{ $message }}</span> @enderror
             </div>
             <div class="search-passengers-container">

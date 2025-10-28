@@ -3,6 +3,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SearchTripsRequest;
 use App\Http\Requests\TripSeatsRequest;
+use App\Models\Carriage;
+use App\Models\CarriageType;
 use App\Models\Trip;
 use App\Services\TripService;
 use Illuminate\Http\JsonResponse;
@@ -24,13 +26,13 @@ class TripController extends Controller
         $fromCity = $data['from_city'];
         $toCity = $data['to_city'];
         $date = $data['date'];
-        $passengerCount = (int)$data['passenger_count'];
+        $passengerCount = (int) $data['passenger_count'];
 
         $trips = $this->service->searchTrips(
             $fromCity,
             $toCity,
             $date,
-            $passengerCount            
+            $passengerCount
         );
         return view('search-trips', [
             'trips' => $trips,
@@ -38,25 +40,28 @@ class TripController extends Controller
         ]);
     }
 
-    // GET /api/trips/{trip}
+    // GET /api/trips/{trip}/service
     public function show(Trip $trip)
     {
-    //    if ($trip->start_timestamp->isPast()) {   //TODO: return this line!!!
-    //        return response()->json(['message' => 'not found'], 404);
-    //    }
-
+        //    if ($trip->start_timestamp->isPast()) {   //TODO: return this line!!!
+        //        return response()->json(['message' => 'not found'], 404);
+        //    }
         abort_if($trip->is_denied, 404);
-
-        $details = $this->service->getTripDetails($trip->id);
-        return view('trips', compact('details'));
+        $tripCarriageTypes = $this->service->getCarriageTypesForTrip($trip->id);
+        return view('trip-type-carriage', compact('tripCarriageTypes'));
     }
 
-    // GET /api/trips/{trip}/seats
-    public function seats(TripSeatsRequest $request, Trip $trip): JsonResponse
+    // GET /api/trips/{trip}/{carriage_type}/{carriage}/seats
+    public function seats(Trip $trip, CarriageType $carriageType, Carriage $carriage)
     {
-        $params = $request->validated();
-        $carriageId = $params['carriage_id'] ?? null;
-        $res = $this->service->getSeats($trip->id, $carriageId);
-        return response()->json($res);
+        abort_if($trip->is_denied, 404);        
+        abort_if($carriageType->is_denied, 404);
+        abort_if($carriage->is_denied, 404);
+        $tripId = $trip->id;
+        $carriageTypeId = $carriageType->id;
+        $carriageId = $carriage->id;
+
+        $seatsAndCarriages = $this->service->getSeatsAndCarriagesForTripByCarriageType($tripId, $carriageTypeId, $carriageId);
+        return view('trip-seats', compact('seatsAndCarriages'));
     }
 }

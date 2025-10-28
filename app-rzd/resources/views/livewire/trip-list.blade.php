@@ -3,7 +3,7 @@
         <p class="trips-empty-p">Нет доступных поездок.</p>
     @else
         @foreach($trips as $trip)
-            <a href="{{ route('trips', ['trip' => $trip['trip_id']]) }}">
+            <a href="{{ route('trip-service', ['trip' => $trip['trip_id']]) }}">
                 <div class="trips-trip-block">
                     <p class="trips-small-p">
                         <span class="trips-small-p-bold">Маршрут: {{ $trip['route_number'] }}</span>
@@ -17,7 +17,7 @@
                     <div class="trips-content-wrapper">
                         <div class="trips-routes">
                             <div class="route-time-block">
-                                <p class="trips-small-p">{{ \Carbon\Carbon::parse($trip['start_timestamp'])->format('d M, D') }}
+                                <p class="trips-small-p">{{ \Carbon\Carbon::parse($trip['start_timestamp'])->locale('ru')->isoFormat('D MMM, dd') }}
                                 </p>
                                 <p class="trips-routes-p-time">
                                     {{ \Carbon\Carbon::parse($trip['start_timestamp'])->format('H:i') }}</p>
@@ -44,7 +44,7 @@
                             </div>
 
                             <div class="route-time-block">
-                                <p class="trips-small-p">{{ \Carbon\Carbon::parse($trip['end_timestamp'])->format('d M, D') }}
+                                <p class="trips-small-p">{{ \Carbon\Carbon::parse($trip['end_timestamp'])->locale('ru')->isoFormat('D MMM, dd') }}
                                 </p>
                                 <p class="trips-routes-p-time">
                                     {{ \Carbon\Carbon::parse($trip['end_timestamp'])->format('H:i') }}</p>

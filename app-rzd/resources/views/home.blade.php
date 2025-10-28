@@ -13,13 +13,20 @@
     <section>
         <div class="block-content-container">
             <div class="block-content-grid">
-                <livewire:block-content : href="/" icon="🎫" title="Мои билеты"
+                <livewire:home-content-card : href="/" icon="🎫" title="Мои билеты"
                     description="Личный кабинет пассажира. Просмотр и управление билетами.">
-                <livewire:block-content : href="/" icon="🚆" title="Поезда и маршруты"
+                <livewire:home-content-card : href="/" icon="🚆" title="Поезда и маршруты"
                     description="Категории поездов, типы вагонов, услуги в поезде.">
-                <livewire:block-content : href="/" icon="🏛️" title="Вокзалы"
+                <livewire:home-content-card : href="/" icon="🏛️" title="Вокзалы"
                     description="Информация о железнодорожных вокзалах.">
             </div>
         </div>
     </section>
+<script>
+window.addEventListener('pageshow', function (event) {
+    if (event.persisted) {
+        document.querySelectorAll('.search-input-field').forEach(el => el.value = '');
+    }
+});
+</script>
 @endsection
