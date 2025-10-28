@@ -27,7 +27,8 @@
 
         {{-- Блок вагонов --}}
         <h2 class="text-xl font-semibold mb-2">Вагоны (тип:
-            {{ $seatsAndCarriages['carriages'][0]['carriage_type']['title'] }})</h2>
+            {{ $seatsAndCarriages['carriages'][0]['carriage_type']['title'] }})
+        </h2>
         <div class="flex flex-wrap gap-3 mb-6">
             @foreach($seatsAndCarriages['carriages'] as $carriage)
                     <a href="{{ route('trip-seats', [
@@ -48,25 +49,14 @@
             №{{ $seatsAndCarriages['seats'][0]['carriage_number'] ?? '-' }}</h2>
 
         @if(!empty($seatsAndCarriages['seats']))
-            <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3">
-                @foreach($seatsAndCarriages['seats'] as $seat)
-                    <div class="p-3 rounded-xl text-center border transition
-                                    @if($seat['is_available'])
-                                        bg-green-50 border-green-400 hover:bg-green-100 cursor-pointer
-                                    @else
-                                        bg-red-50 border-red-400 opacity-60 cursor-not-allowed
-                                    @endif
-                                ">
-                        <p class="font-semibold text-gray-800">Место {{ $seat['number'] }}</p>
-                        <p class="text-sm text-gray-500">{{ $seat['price'] }} ₽</p>
-                        @if(!$seat['is_available'])
-                            <p class="text-xs text-red-500 font-medium">занято</p>
-                        @endif
-                    </div>
-                @endforeach
-            </div>
+            @livewire('carriage-seats-layout', [
+                'tripId' => $seatsAndCarriages['trip_id'],
+                'carriageTypeId' => $seatsAndCarriages['carriage_type_id'],
+                'carriageId' => $seatsAndCarriages['seats'][0]['carriage_id'],
+                'seats' => $seatsAndCarriages['seats'],
+            ])
         @else
-            <p class="text-gray-500 italic">Места не найдены.</p>
-        @endif
-    </div>
+                <p class="text-gray-500 italic">Места не найдены.</p>
+            @endif
+        </div>
 @endsection

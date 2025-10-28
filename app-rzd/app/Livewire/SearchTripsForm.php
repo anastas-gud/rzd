@@ -19,7 +19,7 @@ class SearchTripsForm extends Component
     ];
 
     public function mount()
-    {
+    {        
         $this->from_city = request('from_city', $this->from_city);
         $this->to_city = request('to_city', $this->to_city);
         $this->date = request('date', $this->date);

@@ -22,4 +22,11 @@
             </div>
         </div>
     </section>
+<script>
+window.addEventListener('pageshow', function (event) {
+    if (event.persisted) {
+        document.querySelectorAll('.search-input-field').forEach(el => el.value = '');
+    }
+});
+</script>
 @endsection

@@ -302,6 +302,7 @@ class TripService
                 ],
                 'number' => $trip->route->number,
             ],
+            'carriage_type_id' => $carriageTypeId,
             'carriages' => $carriagesOut->values(),
             'seats' => $seatsOut,
         ];

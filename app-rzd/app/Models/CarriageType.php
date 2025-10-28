@@ -8,7 +8,7 @@ class CarriageType extends Model
 {
     use HasFactory;
     protected $table = 'carriage_types';
-    protected $fillable = ['title','seats_number','created_at','updated_at'];
+    protected $fillable = ['title','seats_number','layout_json', 'created_at','updated_at'];
 
     // РАЗОБРАТЬСЯ С ЭТОГО МОМЕНТА
     /**
