@@ -25,6 +25,21 @@
             </div>
         </div>
 
+        {{-- Схема мест текущего вагона --}}
+        <h2 class="text-xl font-semibold mb-4">Места в вагоне
+            №{{ $seatsAndCarriages['seats'][0]['carriage_number'] ?? '-' }}</h2>
+
+        @if(!empty($seatsAndCarriages['seats']))
+            @livewire('carriage-seats-layout', [
+                'tripId' => $seatsAndCarriages['trip_id'],
+                'carriageTypeId' => $seatsAndCarriages['carriage_type_id'],
+                'carriageId' => $seatsAndCarriages['seats'][0]['carriage_id'],
+                'seats' => $seatsAndCarriages['seats'],
+            ])
+        @else
+                <p class="text-gray-500 italic">Места не найдены.</p>
+        @endif
+
         {{-- Блок вагонов --}}
         <h2 class="text-xl font-semibold mb-2">Вагоны (тип:
             {{ $seatsAndCarriages['carriages'][0]['carriage_type']['title'] }})
@@ -42,21 +57,6 @@
                         </p>
                     </a>
             @endforeach
-        </div>
-
-        {{-- Схема мест текущего вагона --}}
-        <h2 class="text-xl font-semibold mb-4">Места в вагоне
-            №{{ $seatsAndCarriages['seats'][0]['carriage_number'] ?? '-' }}</h2>
-
-        @if(!empty($seatsAndCarriages['seats']))
-            @livewire('carriage-seats-layout', [
-                'tripId' => $seatsAndCarriages['trip_id'],
-                'carriageTypeId' => $seatsAndCarriages['carriage_type_id'],
-                'carriageId' => $seatsAndCarriages['seats'][0]['carriage_id'],
-                'seats' => $seatsAndCarriages['seats'],
-            ])
-        @else
-                <p class="text-gray-500 italic">Места не найдены.</p>
-            @endif
-        </div>
+        </div>        
+    </div>
 @endsection
